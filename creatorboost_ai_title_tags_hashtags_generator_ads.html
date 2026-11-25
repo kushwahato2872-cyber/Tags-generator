@@ -1,0 +1,1230 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CreatorBoost AI — Viral Title, Tags & Hashtags Generator</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Platform & UI Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f5f3ff',
+                            100: '#ede9fe',
+                            200: '#ddd6fe',
+                            300: '#c4b5fd',
+                            400: '#a78bfa',
+                            500: '#8b5cf6',
+                            600: '#7c3aed',
+                            700: '#6d28d9',
+                            800: '#5b21b6',
+                            900: '#4c1d95',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom Scrollbar for smooth aesthetics */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(139, 92, 246, 0.3);
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(139, 92, 246, 0.6);
+        }
+        .glass-card {
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        @keyframes pulse-border {
+            0%, 100% { border-color: rgba(139, 92, 246, 0.4); }
+            50% { border-color: rgba(236, 72, 153, 0.8); }
+        }
+        .generating-glow {
+            animation: pulse-border 2s infinite;
+        }
+
+        /* Advertisement layout */
+        .ad-slot { display:flex; flex-direction:column; align-items:center; justify-content:center;
+            width:100%; min-width:0; margin:18px auto; padding:10px; overflow-x:auto;
+            border:1px solid rgba(148,163,184,.18); border-radius:12px;
+            background:rgba(148,163,184,.035); text-align:center; }
+        .ad-label { margin-bottom:7px; color:#94a3b8; font-size:9px; letter-spacing:.12em;
+            text-transform:uppercase; font-weight:700; }
+        .ad-content { display:flex; justify-content:center; align-items:center; max-width:100%; }
+        .ad-content iframe { max-width:100%; }
+        .ad-slot.ad-native .ad-content { width:100%; }
+        .ad-slot.ad-rail { max-width:180px; }
+        .ad-slot.ad-mobile { max-width:340px; }
+        @media (min-width:1024px) {
+            .ad-slot.ad-banner { max-width:728px; }
+            .ad-slot.ad-rail { margin:18px auto; }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen transition-colors duration-300 font-sans antialiased selection:bg-brand-500 selection:text-white">
+
+    <!-- Top Navigation Bar -->
+    <header class="sticky top-0 z-40 border-b border-slate-200/80 dark:border-slate-800/80 bg-white/80 dark:bg-slate-950/80 glass-card">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <!-- Brand Logo -->
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 via-fuchsia-500 to-amber-500 flex items-center justify-center text-white shadow-lg shadow-brand-500/25">
+                    <i class="fa-solid fa-wand-magic-sparkles text-lg"></i>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <h1 class="font-display font-extrabold text-lg sm:text-xl tracking-tight bg-gradient-to-r from-brand-600 to-pink-500 dark:from-brand-400 dark:to-pink-400 bg-clip-text text-transparent">
+                            CreatorBoost AI
+                        </h1>
+                        <span class="hidden sm:inline-block text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-brand-500/10 text-brand-600 dark:text-brand-400 border border-brand-500/20">
+                            Pro SEO
+                        </span>
+                    </div>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 hidden sm:block">Viral Titles, SEO Tags & Trending Hashtags</p>
+                </div>
+            </div>
+
+            <!-- Right Controls -->
+            <div class="flex items-center gap-2 sm:gap-3">
+                <!-- History Drawer Trigger -->
+                <button id="historyBtn" type="button" class="flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium bg-slate-100 hover:bg-slate-200 dark:bg-slate-900 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800 transition-all">
+                    <i class="fa-solid fa-clock-rotate-left text-brand-500"></i>
+                    <span class="hidden sm:inline">History</span>
+                    <span id="historyCount" class="text-xs font-bold px-1.5 py-0.5 rounded-full bg-brand-500/15 text-brand-600 dark:text-brand-400">0</span>
+                </button>
+
+                <!-- Theme Toggle -->
+                <button id="themeToggle" type="button" aria-label="Toggle Dark Mode" class="w-10 h-10 rounded-xl flex items-center justify-center bg-slate-100 hover:bg-slate-200 dark:bg-slate-900 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-amber-400 transition-all">
+                    <i id="themeIcon" class="fa-solid fa-sun text-base"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+
+        <!-- Ad placement: Leaderboard 1 -->
+        <div class="ad-slot ad-banner" aria-label="Advertisement">
+            <div class="ad-label">Advertisement</div>
+            <div class="ad-content"><script>
+  atOptions = {
+    'key' : '1045a5fe359862a996e577f5898f6841',
+    'format' : 'iframe',
+    'height' : 90,
+    'width' : 728,
+    'params' : {}
+  };
+</script>
+<script data-cfasync="false" src="https://bicea.org/22/1045a5fe359862a996e577f5898f6841"></script></div>
+        </div>
+    \n    <!-- Main Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+        <!-- Hero Banner (Compact & Creator-Friendly) -->
+        <div class="mb-6 sm:mb-8 rounded-2xl bg-gradient-to-r from-brand-600/10 via-fuchsia-500/10 to-amber-500/10 dark:from-brand-500/15 dark:via-fuchsia-500/10 dark:to-amber-500/10 border border-brand-500/20 p-4 sm:p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+            <div>
+                <h2 class="font-display font-bold text-lg sm:text-2xl text-slate-900 dark:text-white">
+                    Apne Content Ko Viral Banayein 🚀
+                </h2>
+                <p class="text-sm text-slate-600 dark:text-slate-300 mt-1">
+                    Apna topic ya video idea likhein — AI turant <span class="font-semibold text-brand-600 dark:text-brand-400">YouTube, Instagram, Facebook, X & LinkedIn</span> ke liye best Titles, Tags aur Hashtags generate karega.
+                </p>
+            </div>
+            <!-- Quick Sample Prompt Pills -->
+            <div class="flex flex-wrap gap-2 shrink-0">
+                <button type="button" onclick="fillSample('How to earn money online using AI tools in 2026 for students')" class="text-xs px-3 py-1.5 rounded-lg bg-white/80 dark:bg-slate-900/80 hover:bg-brand-500 hover:text-white dark:hover:bg-brand-600 border border-slate-200 dark:border-slate-700 transition-all shadow-sm">
+                    ✨ AI Earning Idea
+                </button>
+                <button type="button" onclick="fillSample('5 minute healthy paneer breakfast recipe for gym lovers')" class="text-xs px-3 py-1.5 rounded-lg bg-white/80 dark:bg-slate-900/80 hover:bg-brand-500 hover:text-white dark:hover:bg-brand-600 border border-slate-200 dark:border-slate-700 transition-all shadow-sm">
+                    🍳 Fitness Recipe
+                </button>
+            </div>
+        </div>
+
+
+        <!-- Ad placement: Rectangle 1 -->
+        <div class="ad-slot ad-rectangle" aria-label="Advertisement">
+            <div class="ad-label">Advertisement</div>
+            <div class="ad-content"><script>
+  atOptions = {
+    'key' : 'caf68202f104b53aa61c78a1af124831',
+    'format' : 'iframe',
+    'height' : 250,
+    'width' : 300,
+    'params' : {}
+  };
+</script>
+<script data-cfasync="false" src="https://bicea.org/22/caf68202f104b53aa61c78a1af124831"></script></div>
+        </div>
+    \n                <!-- Two-Column Workspace Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
+            
+            <!-- LEFT PANEL: Creator Input Controls (5 cols on lg) -->
+            <section class="lg:col-span-5 space-y-5 bg-white dark:bg-slate-900/90 rounded-2xl p-5 sm:p-6 border border-slate-200 dark:border-slate-800 shadow-xl shadow-slate-200/40 dark:shadow-none">
+                
+                <!-- 1. Platform Selector -->
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2.5">
+                        1. Platform Chunein (Select Platform)
+                    </label>
+                    <div id="platformGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                        <!-- YouTube Long -->
+                        <button type="button" data-platform="YouTube Video" class="platform-btn active flex items-center gap-2 p-2.5 rounded-xl border text-left transition-all border-brand-500 bg-brand-500/10 text-brand-700 dark:text-brand-300 font-semibold shadow-sm">
+                            <i class="fa-brands fa-youtube text-red-500 text-base"></i>
+                            <span class="text-xs truncate">YouTube Video</span>
+                        </button>
+                        <!-- YouTube Shorts -->
+                        <button type="button" data-platform="YouTube Shorts" class="platform-btn flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/60 hover:border-brand-400 text-slate-700 dark:text-slate-300 text-left transition-all">
+                            <i class="fa-solid fa-bolt text-red-500 text-base"></i>
+                            <span class="text-xs truncate">YT Shorts</span>
+                        </button>
+                        <!-- Instagram Reels & Posts -->
+                        <button type="button" data-platform="Instagram Reels & Post" class="platform-btn flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/60 hover:border-brand-400 text-slate-700 dark:text-slate-300 text-left transition-all">
+                            <i class="fa-brands fa-instagram text-pink-500 text-base"></i>
+                            <span class="text-xs truncate">Instagram</span>
+                        </button>
+                        <!-- Facebook -->
+                        <button type="button" data-platform="Facebook Post & Reels" class="platform-btn flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/60 hover:border-brand-400 text-slate-700 dark:text-slate-300 text-left transition-all">
+                            <i class="fa-brands fa-facebook text-blue-500 text-base"></i>
+                            <span class="text-xs truncate">Facebook</span>
+                        </button>
+                        <!-- X (Twitter) -->
+                        <button type="button" data-platform="X (Twitter)" class="platform-btn flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/60 hover:border-brand-400 text-slate-700 dark:text-slate-300 text-left transition-all">
+                            <i class="fa-brands fa-x-twitter text-slate-900 dark:text-white text-base"></i>
+                            <span class="text-xs truncate">X (Twitter)</span>
+                        </button>
+                        <!-- LinkedIn -->
+                        <button type="button" data-platform="LinkedIn" class="platform-btn flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/60 hover:border-brand-400 text-slate-700 dark:text-slate-300 text-left transition-all">
+                            <i class="fa-brands fa-linkedin text-sky-600 text-base"></i>
+                            <span class="text-xs truncate">LinkedIn</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 2. Topic / Description Input -->
+                <div>
+                    <div class="flex items-center justify-between mb-2">
+                        <label for="topicInput" class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                            2. Video / Post Topic Likhein
+                        </label>
+                        <button type="button" id="clearInputBtn" class="text-xs text-slate-400 hover:text-rose-500 transition-colors">
+                            Clear
+                        </button>
+                    </div>
+                    <textarea id="topicInput" rows="4" 
+                        placeholder="Jaise: Best budget smartphone under 15000 in India, ya phir apni reel/post ka short description likhein..."
+                        class="w-full rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 p-3.5 text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 transition-all outline-none resize-none"></textarea>
+                </div>
+
+                <!-- 3. Language & Tone Selectors -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <!-- Language Selector -->
+                    <div>
+                        <label for="languageSelect" class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">
+                            3. Language (Bhasha)
+                        </label>
+                        <div class="relative">
+                            <select id="languageSelect" class="w-full appearance-none rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 px-3.5 py-2.5 text-sm font-medium text-slate-800 dark:text-slate-200 outline-none cursor-pointer">
+                                <option value="Hinglish (Natural mix of Hindi and English in Roman script)">🇮🇳 Hinglish (Roman Hindi)</option>
+                                <option value="English">🌐 English (Global)</option>
+                                <option value="Hindi (Devanagari script)">🕉️ Hindi (हिंदी देवनागरी)</option>
+                            </select>
+                            <i class="fa-solid fa-chevron-down absolute right-3.5 top-1/2 -translate-y-1/2 text-xs text-slate-400 pointer-events-none"></i>
+                        </div>
+                    </div>
+
+                    <!-- Tone Selector -->
+                    <div>
+                        <label for="toneSelect" class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">
+                            4. Content Tone / Style
+                        </label>
+                        <div class="relative">
+                            <select id="toneSelect" class="w-full appearance-none rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 px-3.5 py-2.5 text-sm font-medium text-slate-800 dark:text-slate-200 outline-none cursor-pointer">
+                                <option value="Catchy, High-CTR & Viral">🔥 Catchy & Viral</option>
+                                <option value="Informative, Educational & Clear">📘 Informative / Tech</option>
+                                <option value="Funny, Relatable & Casual">😂 Funny & Casual</option>
+                                <option value="Professional & Authoritative">💼 Professional</option>
+                                <option value="Curiosity-driven & Storytelling">悬 Suspense / Story</option>
+                            </select>
+                            <i class="fa-solid fa-chevron-down absolute right-3.5 top-1/2 -translate-y-1/2 text-xs text-slate-400 pointer-events-none"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Generate CTA Button -->
+                <button id="generateBtn" type="button" class="w-full py-3.5 px-6 rounded-xl font-display font-bold text-sm sm:text-base text-white bg-gradient-to-r from-brand-600 via-fuchsia-600 to-pink-600 hover:from-brand-500 hover:via-fuchsia-500 hover:to-pink-500 active:scale-[0.99] shadow-lg shadow-brand-500/30 transition-all flex items-center justify-center gap-2.5 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed">
+                    <i class="fa-solid fa-sparkles"></i>
+                    <span id="generateBtnText">Generate Viral Titles, Tags & Hashtags</span>
+                </button>
+
+                <!-- Error Banner (Hidden by default) -->
+                <div id="errorBox" class="hidden rounded-xl bg-rose-500/10 border border-rose-500/30 p-3.5 text-xs sm:text-sm text-rose-600 dark:text-rose-400 flex items-start gap-2.5">
+                    <i class="fa-solid fa-circle-exclamation mt-0.5"></i>
+                    <span id="errorText">Something went wrong. Please try again.</span>
+                </div>
+            </section>
+
+
+        <!-- Ad placement: Vertical 1 -->
+        <div class="ad-slot ad-rail" aria-label="Advertisement">
+            <div class="ad-label">Advertisement</div>
+            <div class="ad-content"><script>
+  atOptions = {
+    'key' : 'ccdf55cb9bf95db06240c60b398b59a8',
+    'format' : 'iframe',
+    'height' : 300,
+    'width' : 160,
+    'params' : {}
+  };
+</script>
+<script data-cfasync="false" src="https://bicea.org/22/ccdf55cb9bf95db06240c60b398b59a8"></script></div>
+        </div>
+
+                    <!-- RIGHT PANEL: AI Generated Output Dashboard (7 cols on lg) -->
+            <section class="lg:col-span-7 space-y-6">
+                
+                <!-- Empty State Placeholder -->
+                <div id="emptyState" class="rounded-2xl border-2 border-dashed border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/40 p-8 sm:p-12 text-center flex flex-col items-center justify-center min-h-[420px]">
+                    <div class="w-16 h-16 rounded-2xl bg-brand-500/10 text-brand-500 flex items-center justify-center mb-4">
+                        <i class="fa-solid fa-rocket text-2xl"></i>
+                    </div>
+                    <h3 class="font-display font-bold text-lg text-slate-800 dark:text-slate-200">
+                        Ready to Boost Your Reach!
+                    </h3>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 max-w-md mt-2 leading-relaxed">
+                        Left side me apna platform aur topic select karke <span class="font-semibold text-brand-600 dark:text-brand-400">Generate</span> par click karein. Aapko milenge:
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-6 w-full max-w-lg text-left">
+                        <div class="p-3 rounded-xl bg-slate-100/80 dark:bg-slate-900 border border-slate-200/70 dark:border-slate-800">
+                            <div class="text-brand-500 font-bold text-xs mb-1">01. Viral Titles</div>
+                            <p class="text-[11px] text-slate-500 dark:text-slate-400">High-CTR hooks with character count check.</p>
+                        </div>
+                        <div class="p-3 rounded-xl bg-slate-100/80 dark:bg-slate-900 border border-slate-200/70 dark:border-slate-800">
+                            <div class="text-fuchsia-500 font-bold text-xs mb-1">02. SEO Tags</div>
+                            <p class="text-[11px] text-slate-500 dark:text-slate-400">500-char limit tracker & removable chips.</p>
+                        </div>
+                        <div class="p-3 rounded-xl bg-slate-100/80 dark:bg-slate-900 border border-slate-200/70 dark:border-slate-800">
+                            <div class="text-amber-500 font-bold text-xs mb-1">03. Smart Hashtags</div>
+                            <p class="text-[11px] text-slate-500 dark:text-slate-400">High-volume, niche & platform tags.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Loading Skeleton State -->
+                <div id="loadingState" class="hidden space-y-5">
+                    <div class="rounded-2xl bg-white dark:bg-slate-900 border border-brand-500/40 generating-glow p-6 space-y-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-5 h-5 border-2 border-brand-500 border-t-transparent rounded-full animate-spin"></div>
+                            <span class="text-sm font-semibold text-brand-600 dark:text-brand-400">AI is crafting viral hooks, SEO keywords & hashtags...</span>
+                        </div>
+                        <div class="space-y-3 animate-pulse">
+                            <div class="h-12 bg-slate-200 dark:bg-slate-800 rounded-xl w-full"></div>
+                            <div class="h-12 bg-slate-200 dark:bg-slate-800 rounded-xl w-5/6"></div>
+                            <div class="h-12 bg-slate-200 dark:bg-slate-800 rounded-xl w-4/6"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Results Container -->
+                <div id="resultsContainer" class="hidden space-y-6">
+                    
+                    <!-- Platform Strategy / Pro Tip Banner -->
+                    <div class="rounded-2xl bg-gradient-to-r from-amber-500/10 via-orange-500/10 to-yellow-500/10 border border-amber-500/30 p-4 flex items-start gap-3.5">
+                        <div class="w-9 h-9 rounded-xl bg-amber-500/20 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0 mt-0.5">
+                            <i class="fa-solid fa-lightbulb"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400">
+                                    Creator Growth Tip • <span id="activePlatformBadge">YouTube Video</span>
+                                </span>
+                            </div>
+                            <p id="growthTipText" class="text-xs sm:text-sm text-slate-700 dark:text-slate-200 mt-1 leading-relaxed"></p>
+                        </div>
+                    </div>
+
+                    <!-- CARD 1: Viral Titles / Hooks -->
+                    <div class="rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-lg shadow-slate-200/30 dark:shadow-none overflow-hidden">
+                        <div class="px-5 py-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50/70 dark:bg-slate-950/40">
+                            <div class="flex items-center gap-2.5">
+                                <span class="w-8 h-8 rounded-lg bg-brand-500/15 text-brand-600 dark:text-brand-400 flex items-center justify-center">
+                                    <i class="fa-solid fa-heading"></i>
+                                </span>
+                                <div>
+                                    <h3 class="font-display font-bold text-sm sm:text-base text-slate-900 dark:text-white">
+                                        Viral Titles & Hooks
+                                    </h3>
+                                    <p class="text-[11px] text-slate-500 dark:text-slate-400">Click copy icon to use your favorite title</p>
+                                </div>
+                            </div>
+                            <button type="button" id="copyAllTitlesBtn" class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-brand-500/10 hover:bg-brand-500 text-brand-600 dark:text-brand-300 hover:text-white transition-all flex items-center gap-1.5">
+                                <i class="fa-regular fa-copy"></i>
+                                <span>Copy All</span>
+                            </button>
+                        </div>
+                        <div id="titlesList" class="p-4 sm:p-5 space-y-3">
+                            <!-- Title rows injected via JS -->
+                        </div>
+                    </div>
+
+                    <!-- CARD 2: SEO Tags (Comma-separated + Chips) -->
+                    <div class="rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-lg shadow-slate-200/30 dark:shadow-none overflow-hidden">
+                        <div class="px-5 py-4 border-b border-slate-200 dark:border-slate-800 flex flex-wrap items-center justify-between gap-2 bg-slate-50/70 dark:bg-slate-950/40">
+                            <div class="flex items-center gap-2.5">
+                                <span class="w-8 h-8 rounded-lg bg-fuchsia-500/15 text-fuchsia-600 dark:text-fuchsia-400 flex items-center justify-center">
+                                    <i class="fa-solid fa-tags"></i>
+                                </span>
+                                <div>
+                                    <div class="flex items-center gap-2">
+                                        <h3 class="font-display font-bold text-sm sm:text-base text-slate-900 dark:text-white">
+                                            SEO Keywords & Tags
+                                        </h3>
+                                        <span id="tagCharCounter" class="text-[11px] font-mono font-semibold px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+                                            0 / 500 chars
+                                        </span>
+                                    </div>
+                                    <p class="text-[11px] text-slate-500 dark:text-slate-400">Click × on any tag chip to remove before copying</p>
+                                </div>
+                            </div>
+                            <button type="button" id="copyAllTagsBtn" class="text-xs font-semibold px-3.5 py-1.5 rounded-lg bg-fuchsia-600 hover:bg-fuchsia-500 text-white shadow-sm transition-all flex items-center gap-1.5">
+                                <i class="fa-regular fa-copy"></i>
+                                <span>Copy Comma-Separated Tags</span>
+                            </button>
+                        </div>
+                        
+                        <div class="p-4 sm:p-5 space-y-4">
+                            <!-- Interactive Tag Chips -->
+                            <div id="tagsChipsContainer" class="flex flex-wrap gap-2">
+                                <!-- Tag chips injected via JS -->
+                            </div>
+                            
+                            <!-- Raw Comma-Separated Preview Box -->
+                            <div class="rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-3">
+                                <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">
+                                    Ready-to-Paste Format (YouTube Studio / SEO Box)
+                                </div>
+                                <p id="rawTagsPreview" class="text-xs text-slate-600 dark:text-slate-300 font-mono leading-relaxed break-words select-all"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CARD 3: Categorized Hashtags -->
+                    <div class="rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-lg shadow-slate-200/30 dark:shadow-none overflow-hidden">
+                        <div class="px-5 py-4 border-b border-slate-200 dark:border-slate-800 flex flex-wrap items-center justify-between gap-2 bg-slate-50/70 dark:bg-slate-950/40">
+                            <div class="flex items-center gap-2.5">
+                                <span class="w-8 h-8 rounded-lg bg-sky-500/15 text-sky-600 dark:text-sky-400 flex items-center justify-center">
+                                    <i class="fa-solid fa-hashtag"></i>
+                                </span>
+                                <div>
+                                    <h3 class="font-display font-bold text-sm sm:text-base text-slate-900 dark:text-white">
+                                        Trending & Niche Hashtags
+                                    </h3>
+                                    <p class="text-[11px] text-slate-500 dark:text-slate-400">Balanced reach strategy for algorithm discovery</p>
+                                </div>
+                            </div>
+                            <button type="button" id="copyAllHashtagsBtn" class="text-xs font-semibold px-3.5 py-1.5 rounded-lg bg-sky-600 hover:bg-sky-500 text-white shadow-sm transition-all flex items-center gap-1.5">
+                                <i class="fa-regular fa-copy"></i>
+                                <span>Copy All Hashtags</span>
+                            </button>
+                        </div>
+
+                        <div class="p-4 sm:p-5 space-y-5">
+                            <!-- Group 1: High Volume / Viral -->
+                            <div>
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="text-xs font-bold text-rose-600 dark:text-rose-400 flex items-center gap-1.5">
+                                        <i class="fa-solid fa-fire"></i> High-Volume & Trending
+                                    </span>
+                                    <button type="button" onclick="copyHashtagGroup('highVolume')" class="text-[11px] font-medium text-slate-500 hover:text-brand-500 transition-colors">
+                                        Copy Group
+                                    </button>
+                                </div>
+                                <div id="highVolumeHashtags" class="flex flex-wrap gap-2"></div>
+                            </div>
+
+                            <!-- Group 2: Niche & Targeted -->
+                            <div>
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5">
+                                        <i class="fa-solid fa-bullseye"></i> Niche & Topic-Specific
+                                    </span>
+                                    <button type="button" onclick="copyHashtagGroup('niche')" class="text-[11px] font-medium text-slate-500 hover:text-brand-500 transition-colors">
+                                        Copy Group
+                                    </button>
+                                </div>
+                                <div id="nicheHashtags" class="flex flex-wrap gap-2"></div>
+                            </div>
+
+                            <!-- Group 3: Platform-Specific Discovery -->
+                            <div>
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="text-xs font-bold text-violet-600 dark:text-violet-400 flex items-center gap-1.5">
+                                        <i class="fa-solid fa-compass"></i> Platform Discovery Tags
+                                    </span>
+                                    <button type="button" onclick="copyHashtagGroup('platformSpecific')" class="text-[11px] font-medium text-slate-500 hover:text-brand-500 transition-colors">
+                                        Copy Group
+                                    </button>
+                                </div>
+                                <div id="platformHashtags" class="flex flex-wrap gap-2"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+        </div>
+
+        <!-- Ad placement: Native 1 -->
+        <div class="ad-slot ad-native" aria-label="Advertisement">
+            <div class="ad-label">Advertisement</div>
+            <div class="ad-content"><script async fetchpriority="high" data-cfasync="false" src="https://bicea.org/21/77b5c779a7c9c8a813e7b569fdc14522"></script>
+<div id="container-77b5c779a7c9c8a813e7b569fdc14522"></div></div>
+        </div>
+    \n    </main>
+
+
+
+        <!-- Ad placement: Vertical 2 -->
+        <div class="ad-slot ad-rail" aria-label="Advertisement">
+            <div class="ad-label">Advertisement</div>
+            <div class="ad-content"><script>
+  atOptions = {
+    'key' : '541b7840e1de3a80b76674b341de14f9',
+    'format' : 'iframe',
+    'height' : 600,
+    'width' : 160,
+    'params' : {}
+  };
+</script>
+<script data-cfasync="false" src="https://bicea.org/22/541b7840e1de3a80b76674b341de14f9"></script></div>
+        </div>
+
+    
+        <!-- Ad placement: Rectangle 2 -->
+        <div class="ad-slot ad-rectangle" aria-label="Advertisement">
+            <div class="ad-label">Advertisement</div>
+            <div class="ad-content"><script>
+  atOptions = {
+    'key' : 'e4cbeb355d825e6d930c983e0bb8a91a',
+    'format' : 'iframe',
+    'height' : 250,
+    'width' : 300,
+    'params' : {}
+  };
+</script>
+<script data-cfasync="false" src="https://bicea.org/22/e4cbeb355d825e6d930c983e0bb8a91a"></script></div>
+        </div>
+
+            <!-- Ad placement: Leaderboard 2 -->
+        <div class="ad-slot ad-banner" aria-label="Advertisement">
+            <div class="ad-label">Advertisement</div>
+            <div class="ad-content"><script>
+  atOptions = {
+    'key' : 'ba900618574a817cb80c33e3626231ea',
+    'format' : 'iframe',
+    'height' : 90,
+    'width' : 728,
+    'params' : {}
+  };
+</script>
+<script data-cfasync="false" src="https://bicea.org/22/ba900618574a817cb80c33e3626231ea"></script></div>
+        </div>
+    \n    
+        <!-- Ad placement: Mobile banner 1 -->
+        <div class="ad-slot ad-mobile" aria-label="Advertisement">
+            <div class="ad-label">Advertisement</div>
+            <div class="ad-content"><script>
+  atOptions = {
+    'key' : 'd56fbf6c671d147590121d317fa57984',
+    'format' : 'iframe',
+    'height' : 50,
+    'width' : 320,
+    'params' : {}
+  };
+</script>
+<script data-cfasync="false" src="https://bicea.org/22/d56fbf6c671d147590121d317fa57984"></script></div>
+        </div>
+
+        <!-- Slide-Over History Drawer -->
+    <div id="historyDrawerOverlay" class="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-sm hidden transition-opacity">
+        <div id="historyDrawer" class="fixed right-0 top-0 bottom-0 w-full max-w-md bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-slate-800 shadow-2xl flex flex-col">
+            <div class="px-5 py-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-clock-rotate-left text-brand-500"></i>
+                    <h3 class="font-display font-bold text-base">Saved Drafts & History</h3>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button type="button" id="clearHistoryBtn" class="text-xs text-rose-500 hover:underline px-2 py-1">
+                        Clear All
+                    </button>
+                    <button type="button" id="closeHistoryBtn" class="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 hover:text-slate-900 dark:hover:text-white">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+            </div>
+            <div id="historyList" class="flex-1 overflow-y-auto p-4 space-y-3">
+                <!-- Saved history cards rendered here -->
+            </div>
+        </div>
+    </div>
+
+
+        <!-- Ad placement: Native 2 -->
+        <div class="ad-slot ad-native" aria-label="Advertisement">
+            <div class="ad-label">Advertisement</div>
+            <div class="ad-content"><script async fetchpriority="high" data-cfasync="false" src="https://bicea.org/21/36ab17e4724f9e8d30059d49047b273f"></script>
+<div id="container-36ab17e4724f9e8d30059d49047b273f"></div></div>
+        </div>
+    \n        <!-- Floating Toast Notification -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 pointer-events-none transition-all duration-300 flex items-center gap-2.5 px-4 py-3 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-xs sm:text-sm font-semibold shadow-2xl">
+        <i class="fa-solid fa-circle-check text-emerald-400 dark:text-emerald-600 text-base"></i>
+        <span id="toastMessage">Copied to clipboard!</span>
+    </div>
+
+    <script>
+        /**
+         * Application State
+         */
+        const state = {
+            platform: 'YouTube Video',
+            currentData: null, // Holds current { titles, tags, hashtags, growthTip }
+            activeTags: [],    // Mutable array of tags so user can remove individual chips
+            history: []
+        };
+
+        // Platform optimal title character limit guidelines for visual feedback
+        const PLATFORM_TITLE_LIMITS = {
+            'YouTube Video': 70,
+            'YouTube Shorts': 60,
+            'Instagram Reels & Post': 125,
+            'Facebook Post & Reels': 100,
+            'X (Twitter)': 280,
+            'LinkedIn': 150
+        };
+
+        /**
+         * DOM Elements
+         */
+        const els = {
+            themeToggle: document.getElementById('themeToggle'),
+            themeIcon: document.getElementById('themeIcon'),
+            platformBtns: document.querySelectorAll('.platform-btn'),
+            topicInput: document.getElementById('topicInput'),
+            clearInputBtn: document.getElementById('clearInputBtn'),
+            languageSelect: document.getElementById('languageSelect'),
+            toneSelect: document.getElementById('toneSelect'),
+            generateBtn: document.getElementById('generateBtn'),
+            generateBtnText: document.getElementById('generateBtnText'),
+            errorBox: document.getElementById('errorBox'),
+            errorText: document.getElementById('errorText'),
+            emptyState: document.getElementById('emptyState'),
+            loadingState: document.getElementById('loadingState'),
+            resultsContainer: document.getElementById('resultsContainer'),
+            activePlatformBadge: document.getElementById('activePlatformBadge'),
+            growthTipText: document.getElementById('growthTipText'),
+            titlesList: document.getElementById('titlesList'),
+            copyAllTitlesBtn: document.getElementById('copyAllTitlesBtn'),
+            tagsChipsContainer: document.getElementById('tagsChipsContainer'),
+            tagCharCounter: document.getElementById('tagCharCounter'),
+            rawTagsPreview: document.getElementById('rawTagsPreview'),
+            copyAllTagsBtn: document.getElementById('copyAllTagsBtn'),
+            highVolumeHashtags: document.getElementById('highVolumeHashtags'),
+            nicheHashtags: document.getElementById('nicheHashtags'),
+            platformHashtags: document.getElementById('platformHashtags'),
+            copyAllHashtagsBtn: document.getElementById('copyAllHashtagsBtn'),
+            historyBtn: document.getElementById('historyBtn'),
+            historyCount: document.getElementById('historyCount'),
+            historyDrawerOverlay: document.getElementById('historyDrawerOverlay'),
+            closeHistoryBtn: document.getElementById('closeHistoryBtn'),
+            clearHistoryBtn: document.getElementById('clearHistoryBtn'),
+            historyList: document.getElementById('historyList'),
+            toast: document.getElementById('toast'),
+            toastMessage: document.getElementById('toastMessage')
+        };
+
+        /**
+         * Initialization
+         */
+        function init() {
+            loadTheme();
+            loadHistory();
+            bindEvents();
+        }
+
+        /**
+         * Theme Management
+         */
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('creatorboost_theme') || 'dark';
+            if (savedTheme === 'dark') {
+                document.documentElement.classList.add('dark');
+                els.themeIcon.className = 'fa-solid fa-sun text-base';
+            } else {
+                document.documentElement.classList.remove('dark');
+                els.themeIcon.className = 'fa-solid fa-moon text-base';
+            }
+        }
+
+        function toggleTheme() {
+            const isDark = document.documentElement.classList.toggle('dark');
+            localStorage.setItem('creatorboost_theme', isDark ? 'dark' : 'light');
+            els.themeIcon.className = isDark ? 'fa-solid fa-sun text-base' : 'fa-solid fa-moon text-base';
+        }
+
+        /**
+         * Event Listeners
+         */
+        function bindEvents() {
+            els.themeToggle.addEventListener('click', toggleTheme);
+
+            // Platform selection pills
+            els.platformBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    els.platformBtns.forEach(b => {
+                        b.classList.remove('active', 'border-brand-500', 'bg-brand-500/10', 'text-brand-700', 'dark:text-brand-300', 'font-semibold', 'shadow-sm');
+                        b.classList.add('border-slate-200', 'dark:border-slate-800', 'bg-slate-50', 'dark:bg-slate-950/60', 'text-slate-700', 'dark:text-slate-300');
+                    });
+                    btn.classList.remove('border-slate-200', 'dark:border-slate-800', 'bg-slate-50', 'dark:bg-slate-950/60', 'text-slate-700', 'dark:text-slate-300');
+                    btn.classList.add('active', 'border-brand-500', 'bg-brand-500/10', 'text-brand-700', 'dark:text-brand-300', 'font-semibold', 'shadow-sm');
+                    state.platform = btn.dataset.platform;
+                });
+            });
+
+            // Clear input
+            els.clearInputBtn.addEventListener('click', () => {
+                els.topicInput.value = '';
+                els.topicInput.focus();
+            });
+
+            // Generate Action
+            els.generateBtn.addEventListener('click', handleGenerate);
+
+            // Keyboard shortcut: Ctrl/Cmd + Enter in textarea
+            els.topicInput.addEventListener('keydown', (e) => {
+                if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                    handleGenerate();
+                }
+            });
+
+            // Copy All Titles
+            els.copyAllTitlesBtn.addEventListener('click', () => {
+                if (!state.currentData?.titles) return;
+                const text = state.currentData.titles.map((t, idx) => `${idx + 1}. ${t}`).join('\n');
+                copyToClipboard(text, 'All titles copied!');
+            });
+
+            // Copy All Tags (Comma-separated)
+            els.copyAllTagsBtn.addEventListener('click', () => {
+                if (!state.activeTags.length) return;
+                copyToClipboard(state.activeTags.join(', '), 'Comma-separated tags copied!');
+            });
+
+            // Copy All Hashtags
+            els.copyAllHashtagsBtn.addEventListener('click', () => {
+                if (!state.currentData?.hashtags) return;
+                const { highVolume = [], niche = [], platformSpecific = [] } = state.currentData.hashtags;
+                const all = [...new Set([...highVolume, ...niche, ...platformSpecific])].join(' ');
+                copyToClipboard(all, 'All hashtags copied!');
+            });
+
+            // History Drawer Controls
+            els.historyBtn.addEventListener('click', () => {
+                renderHistoryList();
+                els.historyDrawerOverlay.classList.remove('hidden');
+            });
+            els.closeHistoryBtn.addEventListener('click', () => {
+                els.historyDrawerOverlay.classList.add('hidden');
+            });
+            els.historyDrawerOverlay.addEventListener('click', (e) => {
+                if (e.target === els.historyDrawerOverlay) {
+                    els.historyDrawerOverlay.classList.add('hidden');
+                }
+            });
+            els.clearHistoryBtn.addEventListener('click', () => {
+                state.history = [];
+                localStorage.removeItem('creatorboost_history');
+                updateHistoryBadge();
+                renderHistoryList();
+                showToast('History cleared');
+            });
+        }
+
+        /**
+         * Helper: Fill Sample Prompt
+         */
+        window.fillSample = function(text) {
+            els.topicInput.value = text;
+            els.topicInput.focus();
+        };
+
+        /**
+         * Clipboard Utility (iFrame safe using execCommand fallback)
+         */
+        function copyToClipboard(text, successMsg = 'Copied to clipboard!') {
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            textArea.style.position = 'fixed';
+            textArea.style.left = '-999999px';
+            textArea.style.top = '-999999px';
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                showToast(successMsg);
+            } catch (err) {
+                console.error('Fallback copy failed', err);
+                showToast('Unable to copy text');
+            }
+            document.body.removeChild(textArea);
+        }
+
+        /**
+         * Toast Feedback
+         */
+        let toastTimeout;
+        function showToast(msg) {
+            els.toastMessage.textContent = msg;
+            els.toast.classList.remove('translate-y-20', 'opacity-0');
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                els.toast.classList.add('translate-y-20', 'opacity-0');
+            }, 2400);
+        }
+
+        /**
+         * Gemini API Call with Exponential Backoff
+         */
+        async function fetchWithRetry(url, options, maxRetries = 4) {
+            let delay = 1000;
+            for (let attempt = 0; attempt <= maxRetries; attempt++) {
+                try {
+                    const response = await fetch(url, options);
+                    if (!response.ok) {
+                        throw new Error(`HTTP Error: ${response.status}`);
+                    }
+                    return await response.json();
+                } catch (err) {
+                    if (attempt === maxRetries) throw err;
+                    await new Promise(res => setTimeout(res, delay));
+                    delay *= 2;
+                }
+            }
+        }
+
+        async function handleGenerate() {
+            const topic = els.topicInput.value.trim();
+            if (!topic) {
+                showError('Kripya pehle apna video ya post ka topic likhein! (Please enter a topic first)');
+                els.topicInput.focus();
+                return;
+            }
+
+            hideError();
+            setLoading(true);
+
+            const platform = state.platform;
+            const language = els.languageSelect.value;
+            const tone = els.toneSelect.value;
+
+            const systemPrompt = `You are an elite Social Media Growth Strategist and SEO Specialist with deep expertise in Indian and global creator ecosystems (YouTube, Instagram, Facebook, X/Twitter, LinkedIn).
+Your task is to generate high-performing, algorithm-friendly Titles/Hooks, SEO Tags, and categorized Hashtags tailored strictly to the user's selected platform, language, and tone.
+Rules:
+1. Titles/Hooks: Generate 6 distinct, scroll-stopping options. Respect platform norms (e.g., punchy high-CTR titles for YouTube, strong opening hooks for Instagram Reels/X/LinkedIn).
+2. Tags: Generate 18-22 high-intent, searchable SEO tags/keywords (without '#' symbol) optimized for search discovery. Keep total combined comma-separated length under 480 characters.
+3. Hashtags: Generate relevant hashtags (always starting with '#') split into three buckets:
+   - highVolume: 5-6 broad, high-traffic trending hashtags.
+   - niche: 6-8 specific, targeted topic hashtags.
+   - platformSpecific: 4-5 platform-native discovery tags (e.g. #ytshorts #ytindia for YT Shorts, #reelsinstagram #explorepage for Instagram, #buildinpublic for X, etc.).
+4. growthTip: Provide 1 crisp, actionable 2-sentence SEO/engagement tip tailored for this specific platform and topic.`;
+
+            const userQuery = `Platform: ${platform}
+Language: ${language}
+Tone/Style: ${tone}
+Topic/Description: ${topic}`;
+
+            const payload = {
+                contents: [{ parts: [{ text: userQuery }] }],
+                systemInstruction: {
+                    parts: [{ text: systemPrompt }]
+                },
+                generationConfig: {
+                    responseMimeType: "application/json",
+                    responseSchema: {
+                        type: "OBJECT",
+                        properties: {
+                            titles: {
+                                type: "ARRAY",
+                                items: { type: "STRING" }
+                            },
+                            tags: {
+                                type: "ARRAY",
+                                items: { type: "STRING" }
+                            },
+                            hashtags: {
+                                type: "OBJECT",
+                                properties: {
+                                    highVolume: {
+                                        type: "ARRAY",
+                                        items: { type: "STRING" }
+                                    },
+                                    niche: {
+                                        type: "ARRAY",
+                                        items: { type: "STRING" }
+                                    },
+                                    platformSpecific: {
+                                        type: "ARRAY",
+                                        items: { type: "STRING" }
+                                    }
+                                },
+                                required: ["highVolume", "niche", "platformSpecific"]
+                            },
+                            growthTip: { type: "STRING" }
+                        },
+                        required: ["titles", "tags", "hashtags", "growthTip"]
+                    }
+                }
+            };
+
+            const apiKey = "";
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+
+            try {
+                const result = await fetchWithRetry(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const rawText = result?.candidates?.[0]?.content?.parts?.[0]?.text;
+                if (!rawText) {
+                    throw new Error('Empty response received from AI.');
+                }
+
+                const parsed = JSON.parse(rawText);
+                
+                // Normalize hashtags to ensure '#' prefix
+                ['highVolume', 'niche', 'platformSpecific'].forEach(key => {
+                    if (Array.isArray(parsed.hashtags[key])) {
+                        parsed.hashtags[key] = parsed.hashtags[key].map(tag => 
+                            tag.startsWith('#') ? tag.replace(/\s+/g, '') : `#${tag.replace(/\s+/g, '')}`
+                        );
+                    } else {
+                        parsed.hashtags[key] = [];
+                    }
+                });
+
+                // Clean tags (remove accidental '#')
+                parsed.tags = (parsed.tags || []).map(t => t.replace(/^#+/, '').trim()).filter(Boolean);
+
+                state.currentData = parsed;
+                state.activeTags = [...parsed.tags];
+
+                renderResults();
+                saveToHistory({
+                    id: Date.now(),
+                    timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                    date: new Date().toLocaleDateString(),
+                    platform,
+                    topic,
+                    language: language.split(' ')[0],
+                    data: parsed
+                });
+
+            } catch (error) {
+                console.error('Generation Error:', error);
+                showError('AI se response lene me samasya hui. Kripya thodi der baad dobara try karein.');
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        /**
+         * UI State Helpers
+         */
+        function setLoading(isLoading) {
+            els.generateBtn.disabled = isLoading;
+            if (isLoading) {
+                els.generateBtnText.textContent = 'Generating Magic...';
+                els.emptyState.classList.add('hidden');
+                els.resultsContainer.classList.add('hidden');
+                els.loadingState.classList.remove('hidden');
+            } else {
+                els.generateBtnText.textContent = 'Generate Viral Titles, Tags & Hashtags';
+                els.loadingState.classList.add('hidden');
+            }
+        }
+
+        function showError(msg) {
+            els.errorText.textContent = msg;
+            els.errorBox.classList.remove('hidden');
+        }
+
+        function hideError() {
+            els.errorBox.classList.add('hidden');
+        }
+
+        /**
+         * Render Generated Results
+         */
+        function renderResults() {
+            if (!state.currentData) return;
+
+            els.emptyState.classList.add('hidden');
+            els.resultsContainer.classList.remove('hidden');
+
+            // 1. Growth Tip & Platform Badge
+            els.activePlatformBadge.textContent = state.platform;
+            els.growthTipText.textContent = state.currentData.growthTip || '';
+
+            // 2. Render Titles
+            const idealLimit = PLATFORM_TITLE_LIMITS[state.platform] || 70;
+            els.titlesList.innerHTML = '';
+
+            state.currentData.titles.forEach((title, index) => {
+                const charLen = title.length;
+                const isOptimal = charLen <= idealLimit;
+                const badgeClass = isOptimal 
+                    ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400' 
+                    : 'bg-amber-500/10 text-amber-600 dark:text-amber-400';
+
+                const row = document.createElement('div');
+                row.className = 'group flex items-start sm:items-center justify-between gap-3 p-3.5 rounded-xl bg-slate-50 dark:bg-slate-950/70 hover:bg-brand-50/60 dark:hover:bg-slate-800/70 border border-slate-200/80 dark:border-slate-800 transition-all';
+                
+                row.innerHTML = `
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+                                #${index + 1}
+                            </span>
+                            <span class="text-[10px] font-mono font-semibold px-2 py-0.5 rounded ${badgeClass}">
+                                ${charLen} / ${idealLimit} chars
+                            </span>
+                        </div>
+                        <p class="text-sm font-medium text-slate-900 dark:text-slate-100 leading-snug break-words">
+                            ${escapeHtml(title)}
+                        </p>
+                    </div>
+                    <button type="button" class="copy-single-title shrink-0 px-3 py-2 rounded-lg bg-white dark:bg-slate-900 hover:bg-brand-600 hover:text-white dark:hover:bg-brand-600 border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-700 dark:text-slate-200 transition-all flex items-center gap-1.5 shadow-sm">
+                        <i class="fa-regular fa-copy"></i>
+                        <span class="hidden sm:inline">Copy</span>
+                    </button>
+                `;
+
+                row.querySelector('.copy-single-title').addEventListener('click', function() {
+                    copyToClipboard(title, 'Title copied!');
+                    const btn = this;
+                    const originalHTML = btn.innerHTML;
+                    btn.innerHTML = `<i class="fa-solid fa-check text-emerald-400"></i><span class="hidden sm:inline">Copied!</span>`;
+                    setTimeout(() => { btn.innerHTML = originalHTML; }, 1500);
+                });
+
+                els.titlesList.appendChild(row);
+            });
+
+            // 3. Render SEO Tags
+            renderTags();
+
+            // 4. Render Hashtags
+            renderHashtagGroup(els.highVolumeHashtags, state.currentData.hashtags.highVolume, 'rose');
+            renderHashtagGroup(els.nicheHashtags, state.currentData.hashtags.niche, 'emerald');
+            renderHashtagGroup(els.platformHashtags, state.currentData.hashtags.platformSpecific, 'violet');
+        }
+
+        function renderTags() {
+            els.tagsChipsContainer.innerHTML = '';
+
+            state.activeTags.forEach((tag, idx) => {
+                const chip = document.createElement('div');
+                chip.className = 'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800/90 hover:bg-fuchsia-500/10 border border-slate-200 dark:border-slate-700 text-xs font-medium text-slate-800 dark:text-slate-200 transition-all group';
+                
+                chip.innerHTML = `
+                    <span class="cursor-pointer hover:text-fuchsia-600 dark:hover:text-fuchsia-400" title="Click to copy tag">${escapeHtml(tag)}</span>
+                    <button type="button" aria-label="Remove tag" class="text-slate-400 hover:text-rose-500 ml-0.5 px-1 rounded transition-colors">
+                        <i class="fa-solid fa-xmark text-[11px]"></i>
+                    </button>
+                `;
+
+                // Click text to copy individual tag
+                chip.querySelector('span').addEventListener('click', () => {
+                    copyToClipboard(tag, `Copied "${tag}"`);
+                });
+
+                // Click X to remove tag
+                chip.querySelector('button').addEventListener('click', () => {
+                    state.activeTags.splice(idx, 1);
+                    renderTags();
+                });
+
+                els.tagsChipsContainer.appendChild(chip);
+            });
+
+            const commaSeparated = state.activeTags.join(', ');
+            els.rawTagsPreview.textContent = commaSeparated || 'No tags selected.';
+
+            // Update 500-char YouTube limit indicator
+            const totalChars = commaSeparated.length;
+            els.tagCharCounter.textContent = `${totalChars} / 500 chars`;
+            if (totalChars > 500) {
+                els.tagCharCounter.className = 'text-[11px] font-mono font-semibold px-2 py-0.5 rounded-md bg-rose-500/15 text-rose-600 dark:text-rose-400';
+            } else {
+                els.tagCharCounter.className = 'text-[11px] font-mono font-semibold px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-600 dark:text-emerald-400';
+            }
+        }
+
+        function renderHashtagGroup(container, tagsArray, colorTheme) {
+            container.innerHTML = '';
+            const colorMap = {
+                rose: 'bg-rose-500/10 text-rose-700 dark:text-rose-300 border-rose-500/20 hover:bg-rose-500 hover:text-white',
+                emerald: 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border-emerald-500/20 hover:bg-emerald-500 hover:text-white',
+                violet: 'bg-violet-500/10 text-violet-700 dark:text-violet-300 border-violet-500/20 hover:bg-violet-500 hover:text-white'
+            };
+
+            (tagsArray || []).forEach(hashtag => {
+                const pill = document.createElement('button');
+                pill.type = 'button';
+                pill.className = `px-3 py-1.5 rounded-full border text-xs font-semibold transition-all cursor-pointer ${colorMap[colorTheme]}`;
+                pill.textContent = hashtag;
+                pill.title = 'Click to copy hashtag';
+                pill.addEventListener('click', () => {
+                    copyToClipboard(hashtag, `Copied ${hashtag}`);
+                });
+                container.appendChild(pill);
+            });
+        }
+
+        window.copyHashtagGroup = function(groupKey) {
+            if (!state.currentData?.hashtags?.[groupKey]) return;
+            const text = state.currentData.hashtags[groupKey].join(' ');
+            copyToClipboard(text, 'Hashtag group copied!');
+        };
+
+        /**
+         * LocalStorage History Management
+         */
+        function loadHistory() {
+            try {
+                const raw = localStorage.getItem('creatorboost_history');
+                state.history = raw ? JSON.parse(raw) : [];
+            } catch (e) {
+                state.history = [];
+            }
+            updateHistoryBadge();
+        }
+
+        function saveToHistory(entry) {
+            state.history.unshift(entry);
+            if (state.history.length > 20) {
+                state.history = state.history.slice(0, 20);
+            }
+            localStorage.setItem('creatorboost_history', JSON.stringify(state.history));
+            updateHistoryBadge();
+        }
+
+        function updateHistoryBadge() {
+            els.historyCount.textContent = state.history.length;
+        }
+
+        function renderHistoryList() {
+            els.historyList.innerHTML = '';
+            if (!state.history.length) {
+                els.historyList.innerHTML = `
+                    <div class="text-center py-12 text-slate-400">
+                        <i class="fa-regular fa-folder-open text-3xl mb-2"></i>
+                        <p class="text-sm">Abhi tak koi saved draft nahi hai.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            state.history.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'p-3.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 hover:border-brand-500 transition-all cursor-pointer';
+                card.innerHTML = `
+                    <div class="flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400 mb-1.5">
+                        <span class="font-bold text-brand-600 dark:text-brand-400">${escapeHtml(item.platform)}</span>
+                        <span>${escapeHtml(item.date)} • ${escapeHtml(item.timestamp)}</span>
+                    </div>
+                    <p class="text-xs font-semibold text-slate-800 dark:text-slate-200 line-clamp-2">
+                        ${escapeHtml(item.topic)}
+                    </p>
+                    <div class="mt-2 flex items-center justify-between text-[11px] text-slate-400">
+                        <span>${item.data.titles?.length || 0} Titles • ${item.data.tags?.length || 0} Tags</span>
+                        <span class="text-brand-500 font-semibold">Load Draft →</span>
+                    </div>
+                `;
+
+                card.addEventListener('click', () => {
+                    state.platform = item.platform;
+                    state.currentData = item.data;
+                    state.activeTags = [...(item.data.tags || [])];
+                    els.topicInput.value = item.topic;
+
+                    // Sync platform button UI
+                    els.platformBtns.forEach(b => {
+                        if (b.dataset.platform === item.platform) {
+                            b.click();
+                        }
+                    });
+
+                    renderResults();
+                    els.historyDrawerOverlay.classList.add('hidden');
+                    showToast('Draft restored!');
+                });
+
+                els.historyList.appendChild(card);
+            });
+        }
+
+        /**
+         * Security Helper: Escape HTML
+         */
+        function escapeHtml(str) {
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        // Boot App
+        window.addEventListener('DOMContentLoaded', init);
+    </script>
+
+        <!-- Ad placement: Mobile banner 2 -->
+        <div class="ad-slot ad-mobile" aria-label="Advertisement">
+            <div class="ad-label">Advertisement</div>
+            <div class="ad-content"><script>
+  atOptions = {
+    'key' : 'f141323587a4e8f9074d60a3ed671a3c',
+    'format' : 'iframe',
+    'height' : 50,
+    'width' : 320,
+    'params' : {}
+  };
+</script>
+<script data-cfasync="false" src="https://bicea.org/22/f141323587a4e8f9074d60a3ed671a3c"></script></div>
+        </div>
+    \n</body>
+</html>
